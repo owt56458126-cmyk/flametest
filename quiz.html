@@ -273,14 +273,6 @@
             border: 2px solid var(--manga-border);
         }
 
-        .modal-flame-quote {
-            font-style: italic;
-            color: #555;
-            font-size: 14px;
-            margin-bottom: 18px;
-            font-weight: bold;
-        }
-
         .modal-flame-desc {
             font-size: 14px;
             color: var(--text-color);
@@ -331,7 +323,6 @@
         <br>
 
         <div id="result-title" class="result-title">火焰名稱</div>
-        <p id="result-quote" style="font-style: italic; color: #444; font-size: 14px; margin: 10px 0 20px 0; font-weight: bold;"></p>
         <div id="result-desc" class="desc-text">詳細描述載入中...</div>
         
         <!-- 其它項目個別查看按鈕區 -->
@@ -352,7 +343,6 @@
         <img class="manga-img-slot" id="modal-manga-img" style="max-width: 120px; max-height: 120px; margin-bottom: 5px;" src="red.jpg" alt="Flame Illustration">
         <br>
         <div id="modal-title" class="modal-flame-title">火焰名稱</div>
-        <div id="modal-quote" class="modal-flame-quote">「核心格言」</div>
         <div id="modal-desc" class="modal-flame-desc">詳細敘述...</div>
         <button class="btn" style="margin: 0; width: 100%;" onclick="closeFlameModal()">關閉視窗</button>
     </div>
@@ -454,11 +444,11 @@
 
     /* 各顏色成果及其標題名稱 */
     const flameResults = {
-        red: { name: "赤紅之火", title: "赤紅之火",desc: "你是熱情與能量的化身！面對未知的挑戰，你從不畏懼，總是充滿鬥志、果斷前行。你具備天生的領導力，不自覺地就會成為團隊的核心與開路先鋒。邊界對你而言只是用來突破的，你會像熊熊野火般將所有阻礙燃燒殆盡！", color: "#ff3333", img: "red.jpg" },
-        blue: { name: "蔚藍之火", title: "蔚藍之火",desc: "你像高溫穩定的藍色火焰一樣，外表看起來冷靜、甚至有些高冷，內心擁有無比深邃的能量。你極度注重邏輯、細節與客觀事實，當周圍的人陷入混亂時，你總能保持清醒並迅速找出最佳解法。你是眾人眼中最靠得住的智囊。", color: "#3385ff", img: "blue.jpg" },
+        red: { name: "赤紅之火", title: "赤紅之火", desc: "你是熱情與能量的化身！面對未知的挑戰，你從不畏懼，總是充滿鬥志、果斷前行。你具備天生的領導力，不自覺地就會成為團隊的核心與開路先鋒。邊界對你而言只是用來突破的，你會像熊熊野火般將所有阻礙燃燒殆盡！", color: "#ff3333", img: "red.jpg" },
+        blue: { name: "蔚藍之火", title: "蔚藍之火", desc: "你像高溫穩定的藍色火焰一樣，外表看起來冷靜、甚至有些高冷，內心擁有無比深邃的能量。你極度注重邏輯、細節與客觀事實，當周圍的人陷入混亂時，你總能保持清醒並迅速找出最佳解法。你是眾人眼中最靠得住的智囊。", color: "#3385ff", img: "blue.jpg" },
         green: { name: "碧綠之火", title: "碧綠之火", desc: "你的火焰散發著大自然般的療癒微光。你擁有極高的同理心與善意，懂得傾聽他人內心深處的聲音。你討厭無意義的爭執，追求和諧與平衡。雖然不喜歡出風頭，但你的存在就像冬日裡的暖爐，能給身邊的人帶來無可取代的安心感。", color: "#22cc55", img: "green.jpg" },
-        yellow: { name: "緗黃之火", title: "緗黃之火",  desc: "你是人群中的耀眼火花！腦袋裡總是充滿了天馬行空、讓人驚艷的新點子。你樂觀開朗，幽默感十足，喜歡探索一切好玩、新奇的事物。對你而言，生活就是一場大型的遊樂園，你熱愛把快樂與正能量分享給周圍的每一個人。", color: "#ffa500", img: "yellow.jpg" },
-        purple: { name: "幽蘭之火", title: "幽蘭之火",  desc: "你散發著一種難以言喻的神秘魅力。你擁有極強的直覺，常常能一眼看透事物的本質與人性的微妙之處。你不喜歡盲從世俗的規則，擁有獨特的美學與思維方式。看似高冷離群，實則在暗中掌握全場的節奏與變數。", color: "#8a2be2", img: "purple.jpg" }
+        yellow: { name: "緗黃之火", title: "緗黃之火", desc: "你是人群中的耀眼火花！腦袋裡總是充滿了天馬行空、讓人驚艷的新點子。你樂觀開朗，幽默感十足，喜歡探索一切好玩、新奇的事物。對你而言，生活就是一場大型的遊樂園，你熱愛把快樂與正能量分享給周圍的每一個人。", color: "#ffa500", img: "yellow.jpg" },
+        purple: { name: "幽蘭之火", title: "幽蘭之火", desc: "你散發著一種難以言喻的神秘魅力。你擁有極強的直覺，常常能一眼看透事物的本質與人性的微妙之處。你不喜歡盲從世俗的規則，擁有獨特的美學與思維方式。看似高冷離群，實則在暗中掌握全場的節奏與變數。", color: "#8a2be2", img: "purple.jpg" }
     };
 
     const maxScores = { red: 8, blue: 8, green: 5, yellow: 7, purple: 8 };
@@ -553,7 +543,6 @@
         titleEl.style.borderColor = result.color;
         titleEl.style.color = result.color;
 
-        document.getElementById('result-quote').innerText = result.quote;
         document.getElementById('result-desc').innerHTML = result.desc;
 
         generateFlameButtons(highestType);
@@ -600,7 +589,6 @@
         titleEl.style.borderColor = data.color;
         titleEl.style.color = data.color;
 
-        document.getElementById('modal-quote').innerText = data.quote;
         document.getElementById('modal-desc').innerText = data.desc;
 
         document.getElementById('flame-modal').classList.add('active');
