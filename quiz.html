@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>靈魂火焰顏色測試</title>
+    <style>
+        /* 核心變數：經典黑白紅漫畫配色 */
+        :root {
+            --bg-color: #fcfcfc;
+            --card-bg: #ffffff;
+            --text-color: #1a1a1a;
+            --manga-border: #1a1a1a;
+            --manga-red: #ff2a2a;
+            --gray-tone: #f0f0f0;
+        }
+
+        body {
+            font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(var(--manga-border) 1px, transparent 0);
+            background-size: 24px 24px;
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 88%;
+            max-width: 520px;
+            background: var(--card-bg);
+            padding: 40px 30px;
+            border: 4px solid var(--manga-border);
+            border-radius: 4px;
+            box-shadow: 12px 12px 0px var(--manga-border);
+            text-align: center;
+            position: relative;
+        }
+
+        h1 {
+            font-size: 30px;
+            font-weight: 900;
+            color: var(--text-color);
+            border-bottom: 4px solid var(--manga-border);
+            padding-bottom: 15px;
+            margin-top: 0;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* 漫畫風進度條 */
+        .progress-container {
+            width: 100%;
+            background-color: #fff;
+            border: 3px solid var(--manga-border);
+            border-radius: 0;
+            margin-bottom: 30px;
+            height: 14px;
+            position: relative;
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background-color: var(--manga-red);
+            background-image: linear-gradient(45deg, var(--manga-border) 25%, transparent 25%, transparent 50%, var(--manga-border) 50%, var(--manga-border) 75%, transparent 75%, transparent);
+            background-size: 15px 15px;
+            transition: width 0.3s ease;
+        }
+
+        /* 答題淡入效果 */
+        .fade-in {
+            animation: fadeIn 0.25s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        /* 粗黑線條按鈕 */
+        .btn, .option-btn {
+            display: block;
+            width: 100%;
+            background: #fff;
+            color: var(--text-color);
+            border: 3px solid var(--manga-border);
+            padding: 14px 18px;
+            margin: 12px 0;
+            border-radius: 0;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            box-sizing: border-box;
+            transition: all 0.15s ease;
+            box-shadow: 4px 4px 0px var(--manga-border);
+            text-align: left;
+        }
+
+        /* 主功能按鈕 */
+        .btn {
+            text-align: center;
+            background: var(--manga-red);
+            color: #fff;
+            font-size: 18px;
+            text-shadow: 1px 1px 0px var(--manga-border);
+        }
+        .btn:hover {
+            background: var(--manga-border);
+            color: #fff;
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px var(--manga-red);
+        }
+
+        .option-btn:hover {
+            background-color: var(--gray-tone);
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px var(--manga-red);
+        }
+
+        .option-btn.selected {
+            background-color: var(--manga-border);
+            color: #fff;
+            box-shadow: 4px 4px 0px var(--manga-red);
+        }
+
+        /* 漫畫風格圖片容器 */
+        .manga-img-slot {
+            display: block;
+            max-width: 160px;
+            max-height: 160px;
+            width: auto;
+            height: auto;
+            margin: 15px auto;
+            border: 4px solid var(--manga-border);
+            box-shadow: 6px 6px 0px var(--manga-border);
+            object-fit: contain;
+            background-color: #fff;
+        }
+
+        /* 其它項目按鈕網格 */
+        .other-flames-section {
+            margin-top: 35px;
+            border-top: 3px dashed var(--manga-border);
+            padding-top: 25px;
+        }
+
+        .other-flames-title {
+            font-size: 14px;
+            color: var(--text-color);
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: 900;
+            letter-spacing: 1px;
+        }
+
+        .flame-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .flame-grid .btn-flame {
+            margin: 0;
+            padding: 10px;
+            font-size: 14px;
+            text-align: center;
+            background: #fff;
+            box-shadow: 3px 3px 0px var(--manga-border);
+        }
+
+        /* 回上一題按鈕 */
+        .controls-container {
+            margin-top: 25px;
+            text-align: left;
+        }
+
+        .control-btn {
+            padding: 10px 20px;
+            font-size: 14px;
+            background-color: #fff;
+            color: var(--text-color);
+            font-weight: bold;
+            border: 3px solid var(--manga-border);
+            box-shadow: 3px 3px 0px var(--manga-border);
+            cursor: pointer;
+            transition: all 0.1s;
+        }
+
+        .control-btn:hover:not(:disabled) {
+            background-color: var(--gray-tone);
+            transform: translate(-1px, -1px);
+            box-shadow: 4px 4px 0px var(--manga-border);
+        }
+        .control-btn:disabled {
+            background-color: #fff;
+            border-color: #ccc;
+            color: #ccc;
+            box-shadow: 2px 2px 0px #ccc;
+            cursor: not-allowed;
+        }
+
+        /* 結果展示頁 */
+        .result-title {
+            font-size: 26px;
+            font-weight: 900;
+            margin: 15px 0;
+            display: inline-block;
+            padding: 6px 14px;
+            border: 3px solid var(--manga-border);
+            box-shadow: 5px 5px 0px var(--manga-border);
+            background: #fff;
+        }
+
+        .desc-text {
+            line-height: 1.7;
+            color: var(--text-color);
+            text-align: left;
+            background: var(--gray-tone);
+            padding: 20px;
+            border: 3px solid var(--manga-border);
+            margin-top: 20px;
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        /* 彈出視窗 */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            background: #fff;
+            width: 85%;
+            max-width: 420px;
+            padding: 35px 30px;
+            border: 4px solid var(--manga-border);
+            box-shadow: 10px 10px 0px var(--manga-border);
+            text-align: center;
+        }
+
+        .modal-flame-title {
+            font-size: 22px;
+            font-weight: 900;
+            margin-bottom: 12px;
+            display: inline-block;
+            padding: 4px 10px;
+            border: 2px solid var(--manga-border);
+        }
+
+        .modal-flame-quote {
+            font-style: italic;
+            color: #555;
+            font-size: 14px;
+            margin-bottom: 18px;
+            font-weight: bold;
+        }
+
+        .modal-flame-desc {
+            font-size: 14px;
+            color: var(--text-color);
+            line-height: 1.6;
+            text-align: left;
+            background: var(--gray-tone);
+            padding: 15px;
+            border: 2px solid var(--manga-border);
+            margin-bottom: 25px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- 1. 歡迎首頁 -->
+    <div id="start-page">
+        <h1>靈魂火焰測試</h1>
+        <img class="manga-img-slot" src="guest.jpg" alt="Manga Illustration">
+        <p style="font-size: 15px; line-height: 1.6; margin-bottom: 35px; font-weight: bold; text-align: left;">
+            每個人心中都潛藏著一團獨一無二的能量之火。透過 10 道潛意識情境題，發掘最契合你靈魂本質的火焰顏色吧！
+        </p>
+        <button class="btn" onclick="startQuiz()">開始尋找你的火焰 →</button>
+    </div>
+
+    <!-- 2. 測驗作答區 -->
+    <div id="quiz-page" class="hidden">
+        <div class="progress-container">
+            <div id="progress-bar" class="progress-bar"></div>
+        </div>
+        <div id="quiz-content-wrapper" class="fade-in">
+            <h3 id="question-text" style="font-size: 18px; text-align: left; margin-bottom: 20px; line-height: 1.5; font-weight: 900;">題目載入中...</h3>
+            <div id="options-container">
+                <!-- 選項由 JS 生成 -->
+            </div>
+        </div>
+        
+        <div class="controls-container">
+            <button id="prev-btn" class="control-btn" onclick="prevQuestion()">← 回上一題</button>
+        </div>
+    </div>
+
+    <!-- 3. 結果呈現頁 -->
+    <div id="result-page" class="hidden">
+        <h2 style="font-size: 18px; margin-bottom: 5px; font-weight: 900;">鑑定結果</h2>
+        
+        <img class="manga-img-slot" id="result-manga-img" src="red.jpg" alt="Result Illustration">
+        <br>
+
+        <div id="result-title" class="result-title">火焰名稱</div>
+        <p id="result-quote" style="font-style: italic; color: #444; font-size: 14px; margin: 10px 0 20px 0; font-weight: bold;"></p>
+        <div id="result-desc" class="desc-text">詳細描述載入中...</div>
+        
+        <!-- 其它項目個別查看按鈕區 -->
+        <div class="other-flames-section">
+            <div class="other-flames-title">[ 探索其他項目特質 ]</div>
+            <div id="flame-buttons-grid" class="flame-grid">
+                <!-- 由 JS 生成 4 個項目按鈕 -->
+            </div>
+        </div>
+
+        <button class="btn" style="margin-top: 35px; width: 100%;" onclick="restartQuiz()">重新測試 ↻</button>
+    </div>
+</div>
+
+<!-- 4. 漫畫風彈出視窗 -->
+<div id="flame-modal" class="modal-overlay" onclick="closeFlameModalFromOverlay(event)">
+    <div class="modal-content">
+        <img class="manga-img-slot" id="modal-manga-img" style="max-width: 120px; max-height: 120px; margin-bottom: 5px;" src="red.jpg" alt="Flame Illustration">
+        <br>
+        <div id="modal-title" class="modal-flame-title">火焰名稱</div>
+        <div id="modal-quote" class="modal-flame-quote">「核心格言」</div>
+        <div id="modal-desc" class="modal-flame-desc">詳細敘述...</div>
+        <button class="btn" style="margin: 0; width: 100%;" onclick="closeFlameModal()">關閉視窗</button>
+    </div>
+</div>
+
+<script>
+    const questions = [
+        {
+            q: "當你走進一個漆黑、陌生的古老房間，你的第一反應是？",
+            options: [
+                { text: "立刻點燃火把，帶頭走在最前面探路。", type: "red" },
+                { text: "停在門口觀察地形，尋找牆上的地圖或開關。", type: "blue" },
+                { text: "感覺有些不安，會先拉住身邊朋友的手互相依靠。", type: "green" },
+                { text: "觀察暗處是否有隱藏的秘道，對未知充滿好奇。", type: "purple" }
+            ]
+        },
+        {
+            q: "朋友與另一半吵架跑來找你哭訴，你通常會怎麼做？",
+            options: [
+                { text: "幫他理性分析對錯，並提供客觀的解決建議。", type: "blue" },
+                { text: "講笑話或帶他去吃大餐、唱歌，轉移他的注意力。", type: "yellow" },
+                { text: "比他還生氣！恨不得立刻幫他去找對方理論。", type: "red" },
+                { text: "一邊安撫他，一邊用犀利的洞察力看穿事情的核心盲點。", type: "purple" }
+            ]
+        },
+        {
+            q: "在小組報告或團隊任務中，你最常扮演的角色是？",
+            options: [
+                { text: "總召集人，負責分配工作、掌控進度與下決定。", type: "red" },
+                { text: "潤滑劑，負責協調組員衝突，讓大家氣氛融洽。", type: "green" },
+                { text: "靈感發想者，提出許多充滿創意、點亮氣氛的好點子。", type: "yellow" },
+                { text: "幕後策劃者，平時話不多，但關鍵時刻能給出逆轉方案。", type: "purple" }
+            ]
+        },
+        {
+            q: "周末難得有空，你最嚮往哪種充電方式？",
+            options: [
+                { text: "去喧鬧的派對、音樂祭，或是跟一大群朋友聚會。", type: "yellow" },
+                { text: "獨自待在房間裡看書、看電影，享受不被打擾的平靜。", type: "blue" },
+                { text: "去爬山、露營，去親近大自然呼吸新鮮空氣。", type: "green" },
+                { text: "沉迷於自己的神秘興趣或創作，享受獨處時的靈感湧現。", type: "purple" }
+            ]
+        },
+        {
+            q: "面對一件完全沒有經驗的新挑戰（例如換新跑道），你的想法是？",
+            options: [
+                { text: "充滿鬥志，反正做了再說，失敗了也是經驗！", type: "red" },
+                { text: "先上網查大量資料、做評估報告，確認成功率再決定。", type: "blue" },
+                { text: "覺得很有趣，腦中已經開始想像各種開心的可能性。", type: "yellow" },
+                { text: "憑直覺去探索，比起常規路線，更想找出非傳統的奇招。", type: "purple" }
+            ]
+        },
+        {
+            q: "如果你可以擁有一種超能力，你最想選擇？",
+            options: [
+                { text: "瞬間移動，可以自由自在去任何想去的地方。", type: "yellow" },
+                { text: "極致敏銳，能瞬間看懂最複雜的邏輯與真相。", type: "blue" },
+                { text: "強大力量，能挺身而出保護所有重要的人。", type: "red" },
+                { text: "讀心術或幻術，能輕易看穿人心與控制情緒。", type: "purple" }
+            ]
+        },
+        {
+            q: "當你遇到意見與你完全相反、且態度強硬的人，你會？",
+            options: [
+                { text: "據理力爭，用邏輯和證據把對方辯倒。", type: "blue" },
+                { text: "直接正面迎擊，大聲表達自己的立場，絕不退讓。", type: "red" },
+                { text: "靈巧地換個話題，避免硬碰硬，保持現場氣氛愉快。", type: "yellow" },
+                { text: "表面冷靜微笑，暗中評估對方的用意，並巧妙設法導向自己的目的。", type: "purple" }
+            ]
+        },
+        {
+            q: "挑選衣服或個人用品時，你最看重什麼？",
+            options: [
+                { text: "實用與質感，講求簡潔流暢的線條。", type: "blue" },
+                { text: "舒適度與自然感，穿起來放鬆最重要。", type: "green" },
+                { text: "亮眼、有活力，能展現出自己的鮮明個性。", type: "yellow" },
+                { text: "獨特與神祕感，喜歡有設計感、不輕易撞衫的風格。", type: "purple" }
+            ]
+        },
+        {
+            q: "當你心情極度低落時，什麼事情最能療癒你？",
+            options: [
+                { text: "大汗淋漓地運動一場，或是把憤怒發洩出來。", type: "red" },
+                { text: "找最好的朋友聊聊，獲得對方的理解與安慰。", type: "yellow" },
+                { text: "吃一頓美味的垃圾食物，然後好好睡一覺。", type: "green" },
+                { text: "戴上耳機聽神秘或風格強烈的音樂，沉浸在自己的小世界。", type: "purple" }
+            ]
+        },
+        {
+            q: "你如何看待「命運」這件事？",
+            options: [
+                { text: "命運掌握在自己手裡，人定勝天！", type: "red" },
+                { text: "命運有一定的規律與因果關係，可以用理智去解析。", type: "blue" },
+                { text: "一切都是最好的安排，順其自然就好。", type: "green" },
+                { text: "命運是一場有趣的遊戲，充滿未知的變數與翻盤的可能。", type: "purple" }
+            ]
+        }
+    ];
+
+    /* 各顏色成果及其標題名稱 */
+    const flameResults = {
+        red: { name: "赤紅", title: "赤紅之火", quote: "「在無畏中破浪，以行動定義自我的開拓者。」", desc: "你是熱情與能量的化身！面對未知的挑戰，你從不畏懼，總是充滿鬥志、果斷前行。你具備天生的領導力，不自覺地就會成為團隊的核心與開路先鋒。邊界對你而言只是用來突破的，你會像熊熊野火般將所有阻礙燃燒殆盡！", color: "#ff3333", img: "red.jpg" },
+        blue: { name: "蔚藍", title: "蔚藍之火", quote: "「在冷靜中沉澱，用理智透視真理的思辨者。」", desc: "你像高溫穩定的藍色火焰一樣，外表看起來冷靜、甚至有些高冷，內心擁有無比深邃的能量。你極度注重邏輯、細節與客觀事實，當周圍的人陷入混亂時，你總能保持清醒並迅速找出最佳解法。你是眾人眼中最靠得住的智囊。", color: "#3385ff", img: "blue.jpg" },
+        green: { name: "碧綠", title: "碧綠之火", quote: "「在包容中守護，用溫柔療癒世間的觀察者。」", desc: "你的火焰散發著大自然般的療癒微光。你擁有極高的同理心與善意，懂得傾聽他人內心深處的聲音。你討厭無意義的爭執，追求和諧與平衡。雖然不喜歡出風頭，但你的存在就像冬日裡的暖爐，能給身邊的人帶來無可取代的安心感。", color: "#22cc55", img: "green.jpg" },
+        yellow: { name: "緗黃", title: "緗黃之火", quote: "「在自由中飛舞，將靈感化作喜悅的樂觀者。」", desc: "你是人群中的耀眼火花！腦袋裡總是充滿了天馬行空、讓人驚艷的新點子。你樂觀開朗，幽默感十足，喜歡探索一切好玩、新奇的事物。對你而言，生活就是一場大型的遊樂園，你熱愛把快樂與正能量分享給周圍的每一個人。", color: "#ffa500", img: "yellow.jpg" },
+        purple: { name: "幽蘭", title: "幽蘭之火", quote: "「在獨特中立足，以直覺看穿世俗的策略家。」", desc: "你散發著一種難以言喻的神秘魅力。你擁有極強的第六感與直覺，常常能一眼看透事物的本質與人性的微妙之處。你不喜歡盲從世俗的規則，擁有獨特的美學與思維方式。看似高冷離群，實則在暗中掌握全場的節奏與變數。", color: "#8a2be2", img: "purple.jpg" }
+    };
+
+    const maxScores = { red: 8, blue: 8, green: 5, yellow: 7, purple: 8 };
+
+    let currentIdx = 0;
+    let answersHistory = []; 
+
+    function startQuiz() {
+        document.getElementById('start-page').classList.add('hidden');
+        document.getElementById('quiz-page').classList.remove('hidden');
+        currentIdx = 0;
+        answersHistory = [];
+        showQuestion();
+    }
+
+    function showQuestion() {
+        const wrapper = document.getElementById('quiz-content-wrapper');
+        wrapper.classList.remove('fade-in');
+        void wrapper.offsetWidth; 
+        wrapper.classList.add('fade-in');
+
+        const qData = questions[currentIdx];
+        const progress = (currentIdx / questions.length) * 100;
+        document.getElementById('progress-bar').style.width = `${progress}%`;
+        document.getElementById('question-text').innerText = `Q${currentIdx + 1}. ${qData.q}`;
+        
+        document.getElementById('prev-btn').disabled = (currentIdx === 0);
+
+        const optionsContainer = document.getElementById('options-container');
+        optionsContainer.innerHTML = '';
+        
+        const previousAnswer = answersHistory[currentIdx];
+
+        qData.options.forEach((opt) => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.innerText = opt.text;
+            btn.setAttribute('data-type', opt.type);
+            
+            if(previousAnswer && previousAnswer === opt.type) {
+                btn.classList.add('selected');
+            }
+
+            btn.onclick = () => selectOption(opt.type);
+            optionsContainer.appendChild(btn);
+        });
+    }
+
+    function selectOption(type) {
+        answersHistory[currentIdx] = type;
+        
+        setTimeout(() => {
+            currentIdx++;
+            if (currentIdx < questions.length) {
+                showQuestion();
+            } else {
+                showResult();
+            }
+        }, 150);
+    }
+
+    function prevQuestion() {
+        if (currentIdx > 0) {
+            currentIdx--;
+            showQuestion();
+        }
+    }
+
+    function showResult() {
+        document.getElementById('quiz-page').classList.add('hidden');
+        document.getElementById('result-page').classList.remove('hidden');
+
+        let finalScores = { red: 0, blue: 0, green: 0, yellow: 0, purple: 0 };
+        answersHistory.forEach(type => { if(finalScores[type] !== undefined) finalScores[type] += 1; });
+
+        let highestType = 'red';
+        let highestRatio = -1;
+        for (let type in finalScores) {
+            let ratio = finalScores[type] / maxScores[type];
+            if (ratio > highestRatio) { highestRatio = ratio; highestType = type; }
+        }
+
+        const result = flameResults[highestType];
+        
+        // 更新結果圖片及外陰影
+        const imgEl = document.getElementById('result-manga-img');
+        imgEl.src = result.img;
+        imgEl.style.boxShadow = `6px 6px 0px ${result.color}`;
+
+        const titleEl = document.getElementById('result-title');
+        titleEl.innerText = result.title;
+        titleEl.style.borderColor = result.color;
+        titleEl.style.color = result.color;
+
+        document.getElementById('result-quote').innerText = result.quote;
+        document.getElementById('result-desc').innerHTML = result.desc;
+
+        generateFlameButtons(highestType);
+    }
+
+    function generateFlameButtons(excludeType) {
+        const grid = document.getElementById('flame-buttons-grid');
+        grid.innerHTML = '';
+
+        for (let key in flameResults) {
+            if (key === excludeType) continue;
+
+            const data = flameResults[key];
+            const btn = document.createElement('button');
+            btn.className = 'option-btn btn-flame';
+            btn.innerText = `[ ${data.name} ]`;
+            
+            btn.onmouseenter = () => {
+                btn.style.borderColor = data.color;
+                btn.style.boxShadow = `4px 4px 0px ${data.color}`;
+                btn.style.color = data.color;
+            };
+            btn.onmouseleave = () => {
+                btn.style.borderColor = 'var(--manga-border)';
+                btn.style.boxShadow = '3px 3px 0px var(--manga-border)';
+                btn.style.color = 'var(--text-color)';
+            };
+
+            btn.onclick = () => openFlameModal(key);
+            grid.appendChild(btn);
+        }
+    }
+
+    function openFlameModal(type) {
+        const data = flameResults[type];
+        
+        // 更新彈出視窗圖片及外陰影
+        const modalImgEl = document.getElementById('modal-manga-img');
+        modalImgEl.src = data.img;
+        modalImgEl.style.boxShadow = `5px 5px 0px ${data.color}`;
+
+        const titleEl = document.getElementById('modal-title');
+        titleEl.innerText = data.title;
+        titleEl.style.borderColor = data.color;
+        titleEl.style.color = data.color;
+
+        document.getElementById('modal-quote').innerText = data.quote;
+        document.getElementById('modal-desc').innerText = data.desc;
+
+        document.getElementById('flame-modal').classList.add('active');
+    }
+
+    function closeFlameModal() {
+        document.getElementById('flame-modal').classList.remove('active');
+    }
+
+    function closeFlameModalFromOverlay(e) {
+        if (e.target.id === 'flame-modal') closeFlameModal();
+    }
+
+    function restartQuiz() {
+        document.getElementById('result-page').classList.add('hidden');
+        document.getElementById('start-page').classList.remove('hidden');
+    }
+</script>
+
+</body>
+</html>
